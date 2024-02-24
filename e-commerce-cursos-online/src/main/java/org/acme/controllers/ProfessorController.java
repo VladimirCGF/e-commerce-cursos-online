@@ -5,6 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.acme.dtos.ProfessorDTO;
 import org.acme.services.ProfessorService;
+import org.acme.services.exceptions.EntityValidationException;
 
 import java.util.List;
 
@@ -28,21 +29,21 @@ public class ProfessorController {
     }
 
     @POST
-    public Response create(ProfessorDTO professorDTO) {
+    public Response create(ProfessorDTO professorDTO) throws EntityValidationException {
         ProfessorDTO professor = service.create(professorDTO);
         return Response.ok(professor).status(Response.Status.CREATED).build();
     }
 
     @PUT
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, ProfessorDTO professorDTO) {
+    public Response update(@PathParam("id") Long id, ProfessorDTO professorDTO) throws EntityValidationException {
         service.update(id, professorDTO);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @DELETE
     @Path("{id}")
-    public Response delete(@PathParam("id") Long id){
+    public Response delete(@PathParam("id") Long id) throws EntityValidationException {
         service.delete(id);
         return Response.status(Response.Status.NO_CONTENT).build();
     }

@@ -6,10 +6,11 @@ import jakarta.transaction.Transactional;
 import org.acme.dtos.ProfessorDTO;
 import org.acme.entities.Professor;
 import org.acme.repositories.ProfessorRepository;
+import org.acme.services.exceptions.EntityValidationException;
 import org.acme.services.exceptions.ResourceNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @ApplicationScoped
 public class ProfessorService {
@@ -18,7 +19,7 @@ public class ProfessorService {
     ProfessorRepository professorRepository;
 
     public List<ProfessorDTO> findAll() {
-        List<Professor> list = professorRepository.findAll().list();
+        List<Professor> list = professorRepository.findAllOrderById();
         return list.stream().map(x -> new ProfessorDTO(x)).toList();
     }
 
@@ -29,25 +30,38 @@ public class ProfessorService {
     }
 
     @Transactional
-    public ProfessorDTO create(ProfessorDTO professorDTO) {
+    public ProfessorDTO create(ProfessorDTO professorDTO) throws EntityValidationException {
         Professor entity = new Professor();
         entity.setNome(professorDTO.getNome());
+        Professor exist = professorRepository.findByNome(professorDTO.getNome());
+        if (exist != null) {
+            throw new EntityValidationException("Nome ja esta em uso");
+        }
         professorRepository.persist(entity);
         return new ProfessorDTO(entity);
     }
 
     @Transactional
-    public void update(Long id, ProfessorDTO professorDTO) {
+    public void update(Long id, ProfessorDTO professorDTO) throws EntityValidationException {
         Professor professor = professorRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Professor não encontrado"));
         professor.setNome(professorDTO.getNome());
+        if (!Objects.equals(professorDTO.getNome(), professor.getNome())) {
+            Professor exist = professorRepository.findByNome(professorDTO.getNome());
+            if (exist != null) {
+                throw new EntityValidationException("Nome ja esta em uso");
+            }
+        }
         professorRepository.persist(professor);
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id) throws EntityValidationException {
         Professor professor = professorRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Professor não encontrado"));
+        if (!professor.getCursos().isEmpty()) {
+            throw new EntityValidationException("Falha de integridade referencial");
+        }
         professorRepository.delete(professor);
     }
 
