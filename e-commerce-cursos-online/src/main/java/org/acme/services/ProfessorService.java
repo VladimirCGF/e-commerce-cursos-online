@@ -45,13 +45,13 @@ public class ProfessorService {
     public void update(Long id, ProfessorDTO professorDTO) throws EntityValidationException {
         Professor professor = professorRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Professor não encontrado"));
-        professor.setNome(professorDTO.getNome());
+        Professor exist = professorRepository.findByNome(professorDTO.getNome());
         if (!Objects.equals(professorDTO.getNome(), professor.getNome())) {
-            Professor exist = professorRepository.findByNome(professorDTO.getNome());
             if (exist != null) {
                 throw new EntityValidationException("Nome ja esta em uso");
             }
         }
+        professor.setNome(professorDTO.getNome());
         professorRepository.persist(professor);
     }
 

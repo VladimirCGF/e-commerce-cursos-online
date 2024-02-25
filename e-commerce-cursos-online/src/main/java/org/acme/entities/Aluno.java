@@ -1,7 +1,6 @@
 package org.acme.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 
 import java.util.List;
 
@@ -13,6 +12,7 @@ public class Aluno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Column(unique = true)
     private String email;
     private String telefone;
     @OneToMany(mappedBy = "alunos")

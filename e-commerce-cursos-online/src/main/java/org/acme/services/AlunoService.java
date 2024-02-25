@@ -41,16 +41,11 @@ public class AlunoService {
     }
 
     @Transactional
-    public void update(Long id, AlunoDTO alunoDTO) throws EntityValidationException {
+    public void update(Long id, AlunoDTO alunoDTO) {
         Aluno aluno = alunoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrado"));
-        if (!Objects.equals(alunoDTO.getEmail(), aluno.getEmail())) {
-            Aluno exist = alunoRepository.findByEmail(aluno.getEmail());
-            if (exist != null) {
-                throw new EntityValidationException("Email já em uso");
-            }
-        }
-        copyDtoEntity(alunoDTO, aluno);
+        aluno.setNome(alunoDTO.getNome());
+        aluno.setTelefone(alunoDTO.getTelefone());
         alunoRepository.persist(aluno);
     }
 

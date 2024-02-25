@@ -8,10 +8,10 @@ import org.acme.entities.Cursos;
 import org.acme.entities.Professor;
 import org.acme.repositories.CursosRepository;
 import org.acme.repositories.ProfessorRepository;
+import org.acme.services.exceptions.EntityValidationException;
 import org.acme.services.exceptions.ResourceNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class CursosService {
@@ -23,36 +23,45 @@ public class CursosService {
     ProfessorRepository professorRepository;
 
     public List<CursosDTO> findAll() {
-        List<Cursos> list = cursosRepository.findAll().list();
+        List<Cursos> list = cursosRepository.findByOrderId();
         return list.stream().map(x -> new CursosDTO(x)).toList();
     }
 
     public CursosDTO findById(Long id) {
-        Cursos curso = cursosRepository.findByIdOptional(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
+        Cursos curso = cursosRepository.findByIdOptional(id).orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
         return new CursosDTO(curso);
     }
 
     @Transactional
-    public CursosDTO create(CursosDTO cursosDTO) {
+    public CursosDTO create(CursosDTO cursosDTO) throws EntityValidationException {
         Cursos cursos = new Cursos();
         copyDtoEntity(cursosDTO, cursos);
+        Cursos exist = cursosRepository.findByNome(cursos.getNome());
+        if (exist != null) {
+            throw new EntityValidationException("Nome ja está em uso");
+        }
         cursosRepository.persist(cursos);
         return new CursosDTO(cursos);
     }
 
     @Transactional
-    public void update(Long id, CursosDTO cursosDTO) {
-        Cursos curso = cursosRepository.findByIdOptional(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
+    public void update(Long id, CursosDTO cursosDTO) throws EntityValidationException {
+        Cursos curso = cursosRepository.findByIdOptional(id).orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
+        Cursos exist = cursosRepository.findByNome(curso.getNome());
+        if (exist != null) {
+            throw new EntityValidationException("Nome ja está em uso");
+        }
         copyDtoEntity(cursosDTO, curso);
         cursosRepository.persist(curso);
     }
 
     @Transactional
-    public void delete(Long id){
+    public void delete(Long id) throws EntityValidationException {
         Cursos curso = cursosRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
+        if (!curso.getMatriculas().isEmpty()){
+            throw new EntityValidationException("Falha de integridade referencial");
+        }
         cursosRepository.delete(curso);
     }
 

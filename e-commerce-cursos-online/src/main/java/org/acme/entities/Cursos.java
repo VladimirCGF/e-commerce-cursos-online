@@ -1,6 +1,8 @@
 package org.acme.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,14 +14,19 @@ public class Cursos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String nome;
+    @NotNull
     @Column(columnDefinition = "TEXT")
     private String descricao;
+    @NotNull
     @Column(name = "carga_horaria")
     private Integer cargaHoraria;
+    @NotNull
     private BigDecimal preco;
     @ManyToOne
     @JoinColumn(name = "professor_id")
+    @NotNull
     private Professor professor;
     @OneToMany(mappedBy = "cursos")
     List<Matricula> matriculas;

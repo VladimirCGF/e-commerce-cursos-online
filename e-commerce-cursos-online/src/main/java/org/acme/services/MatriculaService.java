@@ -10,10 +10,10 @@ import org.acme.entities.Matricula;
 import org.acme.repositories.AlunoRepository;
 import org.acme.repositories.CursosRepository;
 import org.acme.repositories.MatriculaRepository;
+import org.acme.services.exceptions.EntityValidationException;
 import org.acme.services.exceptions.ResourceNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class MatriculaService {
@@ -25,36 +25,38 @@ public class MatriculaService {
     CursosRepository cursosRepository;
 
     public List<MatriculaDTO> findAll() {
-        List<Matricula> result = matriculaRepository.findAll().list();
+        List<Matricula> result = matriculaRepository.findByOrderId();
         return result.stream().map(x -> new MatriculaDTO(x)).toList();
     }
 
     public MatriculaDTO findById(Long id) {
-        Matricula matricula = matriculaRepository.findByIdOptional(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Matricula não encontrada"));
+        Matricula matricula = matriculaRepository.findByIdOptional(id).orElseThrow(() -> new ResourceNotFoundException("Matricula não encontrada"));
         return new MatriculaDTO(matricula);
     }
 
     @Transactional
-    public MatriculaDTO create(MatriculaDTO matriculaDTO) {
+    public MatriculaDTO create(MatriculaDTO matriculaDTO) throws EntityValidationException {
         Matricula matricula = new Matricula();
         copyDtoEntity(matriculaDTO, matricula);
+        if (!matricula.getCursos().getMatriculas().isEmpty()) {
+            if (!matricula.getAlunos().getMatriculas().isEmpty()) {
+                throw new EntityValidationException("Matricula ja existe");
+            }
+        }
         matriculaRepository.persist(matricula);
         return new MatriculaDTO(matricula);
     }
 
     @Transactional
     public void update(Long id, MatriculaDTO matriculaDTO) {
-        Matricula matricula = matriculaRepository.findByIdOptional(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Matricula não encontrada"));
+        Matricula matricula = matriculaRepository.findByIdOptional(id).orElseThrow(() -> new ResourceNotFoundException("Matricula não encontrada"));
         copyDtoEntity(matriculaDTO, matricula);
         matriculaRepository.persist(matricula);
     }
 
     @Transactional
-    public void delete(Long id){
-        Matricula matricula = matriculaRepository.findByIdOptional(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Matricula não encontrada"));
+    public void delete(Long id) {
+        Matricula matricula = matriculaRepository.findByIdOptional(id).orElseThrow(() -> new ResourceNotFoundException("Matricula não encontrada"));
         matriculaRepository.delete(matricula);
     }
 

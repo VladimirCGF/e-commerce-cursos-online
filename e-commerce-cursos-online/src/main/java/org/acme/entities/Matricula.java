@@ -1,6 +1,7 @@
 package org.acme.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -13,11 +14,14 @@ public class Matricula {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "cursos_id")
+    @NotNull
     private Cursos cursos;
     @Column(name = "data_matricula")
+    @NotNull
     private LocalDate dataMatricula;
     @ManyToOne
     @JoinColumn(name = "alunos_id")
+    @NotNull
     private Aluno alunos;
 
     public Matricula() {

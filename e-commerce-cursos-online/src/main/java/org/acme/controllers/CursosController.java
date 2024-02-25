@@ -5,6 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.acme.dtos.CursosDTO;
 import org.acme.services.CursosService;
+import org.acme.services.exceptions.EntityValidationException;
 
 import javax.swing.*;
 import java.util.List;
@@ -29,21 +30,21 @@ public class CursosController {
     }
 
     @POST
-    public Response create(CursosDTO cursosDTO) {
+    public Response create(CursosDTO cursosDTO) throws EntityValidationException {
         CursosDTO dto = service.create(cursosDTO);
         return Response.ok(dto).status(Response.Status.CREATED).build();
     }
 
     @PUT
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, CursosDTO cursosDTO) {
+    public Response update(@PathParam("id") Long id, CursosDTO cursosDTO) throws EntityValidationException {
         service.update(id, cursosDTO);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @DELETE
     @Path("{id}")
-    public Response delete(@PathParam("id") Long id){
+    public Response delete(@PathParam("id") Long id) throws EntityValidationException {
         service.delete(id);
         return Response.status(Response.Status.NO_CONTENT).build();
     }

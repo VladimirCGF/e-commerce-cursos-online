@@ -37,7 +37,7 @@ public class AlunoController {
 
     @PUT
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, @Valid AlunoDTO alunoDTO) throws EntityValidationException {
+    public Response update(@PathParam("id") Long id, @Valid AlunoDTO alunoDTO) {
         alunoService.update(id, alunoDTO);
         return Response.status(Response.Status.NO_CONTENT).build();
     }

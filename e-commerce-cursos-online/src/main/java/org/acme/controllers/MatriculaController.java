@@ -5,6 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.acme.dtos.MatriculaDTO;
 import org.acme.services.MatriculaService;
+import org.acme.services.exceptions.EntityValidationException;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class MatriculaController {
     }
 
     @POST
-    public Response create(MatriculaDTO matriculaDTO) {
+    public Response create(MatriculaDTO matriculaDTO) throws EntityValidationException {
         MatriculaDTO matricula = matriculaService.create(matriculaDTO);
         return Response.ok(matricula).status(Response.Status.CREATED).build();
     }
