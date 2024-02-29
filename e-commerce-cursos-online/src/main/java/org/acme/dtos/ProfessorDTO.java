@@ -1,45 +1,31 @@
 package org.acme.dtos;
 
+import org.acme.entities.Aluno;
+import org.acme.entities.Cargo;
 import org.acme.entities.Professor;
 
-public class ProfessorDTO {
-    private Long id;
-    private String nome;
+public class ProfessorDTO extends PessoaDTO{
+    private Cargo cargo;
 
-    private String email;
+    public ProfessorDTO() {
+        super();
+    }
 
-    public ProfessorDTO(Long id, String nome, String email) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
+    public ProfessorDTO(Long id, String nome, Integer idade, String email, String telefone, Cargo cargo) {
+        super(id, nome, idade, email, telefone);
+        this.cargo = cargo;
     }
 
     public ProfessorDTO(Professor professor) {
-        id = professor.getId();
-        nome = professor.getNome();
-        email = professor.getEmail();
+        super(professor.getId(), professor.getNome(), professor.getIdade(), professor.getEmail(), professor.getTelefone());
+        cargo = professor.getCargo();
     }
 
-    public Long getId() {
-        return id;
+    public Cargo getCargo() {
+        return cargo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
     }
 }

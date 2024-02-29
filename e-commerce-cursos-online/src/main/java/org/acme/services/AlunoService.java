@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.acme.dtos.AlunoDTO;
 import org.acme.entities.Aluno;
+import org.acme.entities.Cargo;
 import org.acme.entities.Professor;
 import org.acme.repositories.AlunoRepository;
 import org.acme.repositories.ProfessorRepository;
@@ -17,7 +18,6 @@ import java.util.List;
 public class AlunoService {
     @Inject
     AlunoRepository alunoRepository;
-
     @Inject
     ProfessorRepository professorRepository;
 
@@ -66,7 +66,9 @@ public class AlunoService {
 
     private void copyDtoEntity(AlunoDTO alunoDTO, Aluno entity) {
         entity.setNome(alunoDTO.getNome());
+        entity.setIdade(alunoDTO.getIdade());
         entity.setEmail(alunoDTO.getEmail());
         entity.setTelefone(alunoDTO.getTelefone());
+        entity.setCargo(Cargo.ALUNO);
     }
 }
