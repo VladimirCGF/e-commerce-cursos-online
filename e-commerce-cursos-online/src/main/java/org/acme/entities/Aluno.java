@@ -1,6 +1,7 @@
 package org.acme.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String nome;
     @Column(unique = true)
     private String email;

@@ -14,15 +14,17 @@ public class Professor {
     private Long id;
     @NotBlank
     private String nome;
+    private String email;
     @OneToMany(mappedBy = "professor")
     private List<Cursos> cursos;
 
     public Professor() {
     }
 
-    public Professor(Long id, String nome) {
+    public Professor(Long id, String nome, String email) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
     }
 
     public Long getId() {
@@ -39,6 +41,14 @@ public class Professor {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Cursos> getCursos() {

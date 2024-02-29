@@ -4,7 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.acme.dtos.ProfessorDTO;
+import org.acme.entities.Aluno;
 import org.acme.entities.Professor;
+import org.acme.repositories.AlunoRepository;
 import org.acme.repositories.ProfessorRepository;
 import org.acme.services.exceptions.EntityValidationException;
 import org.acme.services.exceptions.ResourceNotFoundException;
@@ -17,6 +19,9 @@ public class ProfessorService {
 
     @Inject
     ProfessorRepository professorRepository;
+
+    @Inject
+    AlunoRepository alunoRepository;
 
     public List<ProfessorDTO> findAll() {
         List<Professor> list = professorRepository.findAllOrderById();
@@ -33,9 +38,11 @@ public class ProfessorService {
     public ProfessorDTO create(ProfessorDTO professorDTO) throws EntityValidationException {
         Professor entity = new Professor();
         entity.setNome(professorDTO.getNome());
-        Professor exist = professorRepository.findByNome(professorDTO.getNome());
-        if (exist != null) {
-            throw new EntityValidationException("Nome ja esta em uso");
+        entity.setEmail(professorDTO.getEmail());
+        Professor existProfessor = professorRepository.findByEmail(professorDTO.getEmail());
+        Aluno exist = alunoRepository.findByEmail(professorDTO.getEmail());
+        if (existProfessor != null || exist != null) {
+            throw new EntityValidationException("Email ja esta em uso");
         }
         professorRepository.persist(entity);
         return new ProfessorDTO(entity);

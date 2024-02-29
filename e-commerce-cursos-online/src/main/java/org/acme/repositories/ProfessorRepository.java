@@ -17,5 +17,8 @@ public class ProfessorRepository implements PanacheRepository<Professor> {
     public List<Professor> findAllOrderById() {
         return findAll(Sort.by("id")).list();
     }
+    public Professor findByEmail(String email) {
+        return find("email", email).firstResult();
+    }
 
 }

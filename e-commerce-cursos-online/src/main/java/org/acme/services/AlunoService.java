@@ -5,17 +5,21 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.acme.dtos.AlunoDTO;
 import org.acme.entities.Aluno;
+import org.acme.entities.Professor;
 import org.acme.repositories.AlunoRepository;
+import org.acme.repositories.ProfessorRepository;
 import org.acme.services.exceptions.EntityValidationException;
 import org.acme.services.exceptions.ResourceNotFoundException;
 
 import java.util.List;
-import java.util.Objects;
 
 @ApplicationScoped
 public class AlunoService {
     @Inject
     AlunoRepository alunoRepository;
+
+    @Inject
+    ProfessorRepository professorRepository;
 
     public List<AlunoDTO> findAll() {
         List<Aluno> result = alunoRepository.findAllOrderById();
@@ -33,7 +37,8 @@ public class AlunoService {
         Aluno aluno = new Aluno();
         copyDtoEntity(alunoDTO, aluno);
         Aluno exist = alunoRepository.findByEmail(aluno.getEmail());
-        if (exist != null) {
+        Professor existProfessor = professorRepository.findByEmail(alunoDTO.getEmail());
+        if (exist != null || existProfessor != null) {
             throw new EntityValidationException("Email em uso");
         }
         alunoRepository.persist(aluno);
