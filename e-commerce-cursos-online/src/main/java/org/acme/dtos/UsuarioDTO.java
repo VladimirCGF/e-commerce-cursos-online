@@ -1,21 +1,33 @@
 package org.acme.dtos;
 
-public abstract class PessoaDTO {
+import org.acme.entities.Usuario;
+
+import java.time.LocalDate;
+
+public class UsuarioDTO {
     private Long id;
     private String nome;
-    private Integer idade;
+    private LocalDate data;
     private String email;
     private String telefone;
 
-    public PessoaDTO() {
+    public UsuarioDTO() {
     }
 
-    public PessoaDTO(Long id, String nome, Integer idade, String email, String telefone) {
+    public UsuarioDTO(Long id, String nome, LocalDate data, String email, String telefone) {
         this.id = id;
         this.nome = nome;
-        this.idade = idade;
+        this.data = data;
         this.email = email;
         this.telefone = telefone;
+    }
+
+    public UsuarioDTO(Usuario usuario) {
+        id = usuario.getId();
+        nome = usuario.getNome();
+        data = usuario.getData();
+        email = usuario.getEmail();
+        telefone = usuario.getTelefone();
     }
 
     public Long getId() {
@@ -34,12 +46,12 @@ public abstract class PessoaDTO {
         this.nome = nome;
     }
 
-    public Integer getIdade() {
-        return idade;
+    public LocalDate getData() {
+        return data;
     }
 
-    public void setIdade(Integer idade) {
-        this.idade = idade;
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
     public String getEmail() {
@@ -57,4 +69,6 @@ public abstract class PessoaDTO {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+
 }

@@ -10,9 +10,9 @@ public class CursosDTO {
     private String descricao;
     private Integer cargaHoraria;
     private BigDecimal preco;
-    private ProfessorDTO professor;
+    private UsuarioDTO professor;
 
-    public CursosDTO(Long id, String nome, String descricao, Integer cargaHoraria, BigDecimal preco, ProfessorDTO professorDto) {
+    public CursosDTO(Long id, String nome, String descricao, Integer cargaHoraria, BigDecimal preco, UsuarioDTO professorDto) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -27,7 +27,7 @@ public class CursosDTO {
         descricao = cursos.getDescricao();
         cargaHoraria = cursos.getCargaHoraria();
         preco = cursos.getPreco();
-        professor = new ProfessorDTO(cursos.getProfessor());
+        professor = new UsuarioDTO(cursos.getProfessor());
     }
 
     public Long getId() {
@@ -70,11 +70,11 @@ public class CursosDTO {
         this.preco = preco;
     }
 
-    public ProfessorDTO getProfessor() {
+    public UsuarioDTO getProfessor() {
         return professor;
     }
 
-    public void setProfessor(ProfessorDTO professor) {
+    public void setProfessor(UsuarioDTO professor) {
         this.professor = professor;
     }
 }

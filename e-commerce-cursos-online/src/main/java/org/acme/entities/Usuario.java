@@ -4,28 +4,36 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@MappedSuperclass
-public abstract class Pessoa {
+import java.time.LocalDate;
+import java.util.List;
+
+@Entity
+@Table(name = "tb_usuario")
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     private String nome;
+
     @NotNull
-    private Integer idade;
+    private LocalDate data;
     @NotBlank
     @Column(unique = true)
     private String email;
     @NotBlank
     private String telefone;
-
-    public Pessoa() {
+    @OneToMany(mappedBy = "professor")
+    private List<Cursos> cursos;
+    @OneToMany(mappedBy = "aluno")
+    private List<Matricula> matriculas;
+    public Usuario() {
     }
 
-    public Pessoa(Long id, String nome, Integer idade, String email, String telefone) {
+    public Usuario(Long id, String nome, LocalDate data, String email, String telefone) {
         this.id = id;
         this.nome = nome;
-        this.idade = idade;
+        this.data = data;
         this.email = email;
         this.telefone = telefone;
     }
@@ -46,12 +54,12 @@ public abstract class Pessoa {
         this.nome = nome;
     }
 
-    public Integer getIdade() {
-        return idade;
+    public LocalDate getData() {
+        return data;
     }
 
-    public void setIdade(Integer idade) {
-        this.idade = idade;
+    public void setData(LocalDate dataNascimento) {
+        this.data = dataNascimento;
     }
 
     public String getEmail() {
@@ -68,5 +76,13 @@ public abstract class Pessoa {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public List<Cursos> getCursos() {
+        return cursos;
+    }
+
+    public List<Matricula> getMatriculas() {
+        return matriculas;
     }
 }

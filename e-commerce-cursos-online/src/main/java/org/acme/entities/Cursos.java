@@ -1,7 +1,6 @@
 package org.acme.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
@@ -25,16 +24,16 @@ public class Cursos {
     @NotNull
     private BigDecimal preco;
     @ManyToOne
-    @JoinColumn(name = "professor_id")
+    @JoinColumn(name = "usuario_id")
     @NotNull
-    private Professor professor;
-    @OneToMany(mappedBy = "cursos")
+    private Usuario professor;
+    @OneToMany(mappedBy = "curso")
     List<Matricula> matriculas;
 
     public Cursos() {
     }
 
-    public Cursos(Long id, String nome, String descricao, Integer cargaHoraria, BigDecimal preco, Professor professor) {
+    public Cursos(Long id, String nome, String descricao, Integer cargaHoraria, BigDecimal preco, Usuario professor) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -83,11 +82,11 @@ public class Cursos {
         this.preco = preco;
     }
 
-    public Professor getProfessor() {
+    public Usuario getProfessor() {
         return professor;
     }
 
-    public void setProfessor(Professor professor) {
+    public void setProfessor(Usuario professor) {
         this.professor = professor;
     }
 

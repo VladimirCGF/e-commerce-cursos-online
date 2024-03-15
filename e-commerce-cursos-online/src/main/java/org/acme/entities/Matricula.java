@@ -15,23 +15,23 @@ public class Matricula {
     @ManyToOne
     @JoinColumn(name = "cursos_id")
     @NotNull
-    private Cursos cursos;
+    private Cursos curso;
     @Column(name = "data_matricula")
     @NotNull
     private LocalDate dataMatricula;
     @ManyToOne
-    @JoinColumn(name = "alunos_id")
+    @JoinColumn(name = "usuario_id")
     @NotNull
-    private Aluno alunos;
+    private Usuario aluno;
 
     public Matricula() {
     }
 
-    public Matricula(Long id, Cursos cursos, LocalDate dataMatricula, Aluno aluno) {
+    public Matricula(Long id, Cursos curso, LocalDate dataMatricula, Usuario aluno) {
         this.id = id;
-        this.cursos = cursos;
+        this.curso = curso;
         this.dataMatricula = dataMatricula;
-        this.alunos = aluno;
+        this.aluno = aluno;
     }
 
     public Long getId() {
@@ -42,12 +42,12 @@ public class Matricula {
         this.id = id;
     }
 
-    public Cursos getCursos() {
-        return cursos;
+    public Cursos getCurso() {
+        return curso;
     }
 
-    public void setCursos(Cursos cursos) {
-        this.cursos = cursos;
+    public void setCurso(Cursos cursos) {
+        this.curso = cursos;
     }
 
     public LocalDate getDataMatricula() {
@@ -58,12 +58,12 @@ public class Matricula {
         this.dataMatricula = dataMatricula;
     }
 
-    public Aluno getAlunos() {
-        return alunos;
+    public Usuario getAluno() {
+        return aluno;
     }
 
-    public void setAlunos(Aluno alunos) {
-        this.alunos = alunos;
+    public void setAluno(Usuario aluno) {
+        this.aluno = aluno;
     }
 
 

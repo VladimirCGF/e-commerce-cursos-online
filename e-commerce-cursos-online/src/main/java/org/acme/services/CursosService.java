@@ -5,9 +5,9 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.acme.dtos.CursosDTO;
 import org.acme.entities.Cursos;
-import org.acme.entities.Professor;
+import org.acme.entities.Usuario;
 import org.acme.repositories.CursosRepository;
-import org.acme.repositories.ProfessorRepository;
+import org.acme.repositories.UsuarioRepository;
 import org.acme.services.exceptions.EntityValidationException;
 import org.acme.services.exceptions.ResourceNotFoundException;
 
@@ -20,7 +20,7 @@ public class CursosService {
     CursosRepository cursosRepository;
 
     @Inject
-    ProfessorRepository professorRepository;
+    UsuarioRepository usuarioRepository;
 
     public List<CursosDTO> findAll() {
         List<Cursos> list = cursosRepository.findByOrderId();
@@ -59,7 +59,7 @@ public class CursosService {
     public void delete(Long id) throws EntityValidationException {
         Cursos curso = cursosRepository.findByIdOptional(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
-        if (!curso.getMatriculas().isEmpty()){
+        if (!curso.getMatriculas().isEmpty()) {
             throw new EntityValidationException("Falha de integridade referencial");
         }
         cursosRepository.delete(curso);
@@ -70,7 +70,7 @@ public class CursosService {
         entity.setDescricao(cursosDTO.getDescricao());
         entity.setCargaHoraria(cursosDTO.getCargaHoraria());
         entity.setPreco(cursosDTO.getPreco());
-        Professor professor = professorRepository.findById(cursosDTO.getProfessor().getId());
+        Usuario professor = usuarioRepository.findById(cursosDTO.getProfessor().getId());
         entity.setProfessor(professor);
     }
 

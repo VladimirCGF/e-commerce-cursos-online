@@ -1,43 +1,44 @@
 package org.acme.controllers;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
-import org.acme.dtos.ProfessorDTO;
-import org.acme.services.ProfessorService;
+import org.acme.dtos.UsuarioDTO;
+import org.acme.services.UsuarioService;
 import org.acme.services.exceptions.EntityValidationException;
 
 import java.util.List;
 
-@Path(value = "/professor")
-public class ProfessorController {
+@Path(value = "/usuario")
+public class UsuarioController {
 
     @Inject
-    ProfessorService service;
+    UsuarioService service;
 
     @GET
     public Response findAll() {
-        List<ProfessorDTO> list = service.findAll();
+        List<UsuarioDTO> list = service.findAll();
         return Response.ok(list).build();
     }
 
     @GET
     @Path("{id}")
     public Response findById(@PathParam("id") Long id) {
-        ProfessorDTO professorDTO = service.findById(id);
-        return Response.ok(professorDTO).build();
+        UsuarioDTO usuarioDTO = service.findById(id);
+        return Response.ok(usuarioDTO).build();
     }
 
     @POST
-    public Response create(ProfessorDTO professorDTO) throws EntityValidationException {
-        ProfessorDTO professor = service.create(professorDTO);
-        return Response.ok(professor).status(Response.Status.CREATED).build();
+    public Response create(@Valid UsuarioDTO usuarioDTO) throws EntityValidationException {
+        UsuarioDTO usuario = service.create(usuarioDTO);
+        return Response.ok(usuario).status(Response.Status.CREATED).build();
     }
 
     @PUT
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, ProfessorDTO professorDTO) throws EntityValidationException {
-        service.update(id, professorDTO);
+    public Response update(@PathParam("id") Long id,@Valid UsuarioDTO usuarioDTO) throws EntityValidationException {
+        service.update(id, usuarioDTO);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 

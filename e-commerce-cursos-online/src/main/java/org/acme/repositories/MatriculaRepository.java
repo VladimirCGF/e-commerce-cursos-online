@@ -3,9 +3,9 @@ package org.acme.repositories;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.acme.entities.Aluno;
 import org.acme.entities.Cursos;
 import org.acme.entities.Matricula;
+import org.acme.entities.Usuario;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ public class MatriculaRepository implements PanacheRepository<Matricula> {
     }
 
     public Matricula findByCurso(Cursos id) {
-        return find("cursos", id.getId()).firstResult();
+        return find("curso", id.getId()).firstResult();
     }
-    public Matricula findByAluno(Aluno id) {
-        return find("alunos", id.getId()).firstResult();
+    public Matricula findByAluno(Usuario id) {
+        return find("aluno", id.getId()).firstResult();
     }
 
 }

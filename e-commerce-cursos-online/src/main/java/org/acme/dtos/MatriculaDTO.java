@@ -8,20 +8,20 @@ public class MatriculaDTO {
     private Long id;
     private CursosDTO cursos;
     private LocalDate dataMatricula;
-    private AlunoDTO alunos;
+    private UsuarioDTO aluno;
 
-    public MatriculaDTO(Long id, CursosDTO cursos, LocalDate dataMatricula, AlunoDTO alunosDto) {
+    public MatriculaDTO(Long id, CursosDTO cursos, LocalDate dataMatricula, UsuarioDTO aluno) {
         this.id = id;
         this.cursos = cursos;
         this.dataMatricula = dataMatricula;
-        this.alunos = alunosDto;
+        this.aluno = aluno;
     }
 
     public MatriculaDTO(Matricula matricula) {
         this.id = matricula.getId();
-        this.cursos = new CursosDTO(matricula.getCursos());
+        this.cursos = new CursosDTO(matricula.getCurso());
         this.dataMatricula = matricula.getDataMatricula();
-        this.alunos = new AlunoDTO(matricula.getAlunos());
+        this.aluno = new UsuarioDTO(matricula.getAluno());
     }
 
     public Long getId() {
@@ -48,11 +48,11 @@ public class MatriculaDTO {
         this.dataMatricula = dataMatricula;
     }
 
-    public AlunoDTO getAlunos() {
-        return alunos;
+    public UsuarioDTO getAlunos() {
+        return aluno;
     }
 
-    public void setAlunos(AlunoDTO alunos) {
-        this.alunos = alunos;
+    public void setAlunos(UsuarioDTO aluno) {
+        this.aluno = aluno;
     }
 }
